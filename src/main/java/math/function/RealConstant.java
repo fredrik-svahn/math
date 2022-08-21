@@ -1,28 +1,28 @@
 package math.function;
 
+
+import org.junit.jupiter.api.Test;
+
 import java.util.Objects;
 
-public class Variable extends Expression {
-    private String name;
-    private Expression value;
+public class RealConstant extends Expression {
+    public double value;
 
-    public Variable(String name) {
-        this.name = name;
+    public RealConstant(double value) {
+        this.value = value;
     }
 
     @Override
     public Expression evaluate() {
-        if(value == null) return this;
-
-        return value.evaluate();
+        return this;
     }
 
     @Override
     public void bind(String variableName,
                      Expression value) {
-        if(variableName.equals(name)) {
-            this.value = value;
-        }
+        /**
+         * Binding to a constant does nothing
+         */
     }
 
     @Override
@@ -31,13 +31,12 @@ public class Variable extends Expression {
             return true;
         if (object == null || getClass() != object.getClass())
             return false;
-        Variable variable = (Variable) object;
-
-        return Objects.equals(name, variable.name);
+        RealConstant that = (RealConstant) object;
+        return Double.compare(that.value, value) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(value);
     }
 }
