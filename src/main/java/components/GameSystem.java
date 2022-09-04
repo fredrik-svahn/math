@@ -4,19 +4,19 @@ import misc.Main;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public abstract class GameSystem extends EventHandler {
-    private static LinkedBlockingQueue<Consumer<EventHandler> > eventQueue = new LinkedBlockingQueue<>();
+    private static BlockingQueue<Consumer<EventHandler> > eventQueue = new LinkedBlockingQueue<>();
     private static Collection<GameSystem> systems = new ArrayList<>();
 
     public static void main(String[] args) throws
             InterruptedException {
         new MainLoop();
-        
-
-
+        new BasicRendering();
+        new PlayerSpawn();
 
         run();
     }
@@ -27,10 +27,8 @@ public abstract class GameSystem extends EventHandler {
 
         while(true) {
             var event = eventQueue.take();
-
-            for (GameSystem system : systems) {
-                event.accept(system);
-            }
+            systems.parallelStream().forEach(event);
+            Thread.sleep(16);
         }
     }
 
