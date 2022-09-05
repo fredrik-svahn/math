@@ -6,7 +6,7 @@ public class MainLoop extends GameSystem {
     private long deltaTimeLimit = 16;
 
     @Override
-    void init() {
+    void windowInit() {
         send(EventHandler::updateTriggered);
     }
 

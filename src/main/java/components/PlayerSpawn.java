@@ -10,6 +10,7 @@ public class PlayerSpawn extends GameSystem {
         Graphics2D g = image.createGraphics();
         g.setColor(Color.RED);
         g.fillRect(0, 0, 50, 50);
+        System.out.println(Color.RED);
         send(s -> s.imageCreated("player", image));
     }
 }

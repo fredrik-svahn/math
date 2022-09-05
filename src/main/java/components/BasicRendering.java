@@ -10,6 +10,7 @@ public class BasicRendering
     private JFrame frame;
 
     private Map<String, RenderInformation> images = new ConcurrentHashMap<>();
+    private long ms;
 
     private static class RenderInformation {
         public double angle;
@@ -42,13 +43,25 @@ public class BasicRendering
                     g.drawImage(image.image, image.x, image.y, null);
                 });
 
+                try {
+                    Thread.sleep(ms);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 repaint();
             }
         });
 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
         frame.setVisible(true);
         send(EventHandler::windowInit);
+    }
+
+    @Override
+    void targetFrameRateSet(int fps) {
+        this.ms = 1000 / fps;
     }
 
     @Override
