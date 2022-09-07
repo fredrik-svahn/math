@@ -2,12 +2,10 @@ package game;
 
 import math.Vector3D;
 import math.polar.Angle;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 public class EntityFactory {
-    @NotNull
     static Entity Player(double x,
                          double y) {
         Entity o = new Entity();
@@ -31,7 +29,6 @@ public class EntityFactory {
         return o;
     }
 
-    @NotNull
     static Entity Enemy(double x,
                         double y) {
         Entity o = new Entity();
@@ -51,8 +48,6 @@ public class EntityFactory {
 
         return o;
     }
-
-    @NotNull
     public static Entity PlayerProjectile(Entity player) {
         Entity projectile = new Entity();
 

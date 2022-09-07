@@ -39,7 +39,6 @@ public class BasicRendering
                 g.clearRect(0, 0, frame.getWidth(), frame.getHeight());
 
                 images.forEach((name, image) -> {
-                    System.out.println("image");
                     g.drawImage(image.image, image.x, image.y, null);
                 });
 
