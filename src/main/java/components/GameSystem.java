@@ -2,6 +2,7 @@ package components;
 
 import misc.Main;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
@@ -11,10 +12,12 @@ import java.util.function.Consumer;
 public abstract class GameSystem extends EventHandler {
     private static BlockingQueue<Consumer<EventHandler> > eventQueue = new LinkedBlockingQueue<>();
     private static Collection<GameSystem> systems = new ArrayList<>();
+    private static long storedDeltaTime = 0;
+    private static long lastUpdate = System.nanoTime();
+    private static long deltaTimeLimit = 2;
 
     public static void main(String[] args) throws
             InterruptedException {
-        new MainLoop();
         new BasicRendering();
         new PlayerSpawn();
 
@@ -25,11 +28,36 @@ public abstract class GameSystem extends EventHandler {
             InterruptedException {
         send(EventHandler::init);
 
-        while(true) {
-            var event = eventQueue.take();
-            systems.parallelStream().forEach(event);
-            Thread.sleep(16);
+        new Thread(() -> {
+            lastUpdate = System.nanoTime();
+
+            while(true) {
+                try {
+                    storeUpdates();
+                    Consumer<EventHandler> event = eventQueue.take();
+                    systems.forEach(event);
+                    runStoredUpdates();
+                    Thread.sleep(deltaTimeLimit);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
+    }
+
+    private static void storeUpdates() {
+        double timeElapsed = (System.nanoTime() - lastUpdate) / 1e6;
+        storedDeltaTime += timeElapsed;
+    }
+
+    private static void runStoredUpdates() {
+        while(storedDeltaTime > deltaTimeLimit) {
+            systems.forEach(EventHandler::update);
+            storedDeltaTime -= deltaTimeLimit;
         }
+        lastUpdate = System.nanoTime();
     }
 
     public GameSystem() {

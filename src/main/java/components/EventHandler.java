@@ -14,4 +14,5 @@ public abstract class EventHandler {
     void imageDeleted(String name) {}
     void imageMoved(String name, int x, int y) {}
     void imageAngleSet(String name, double angle) {}
+    void imageOriginSet(String name, int x, int y) {}
 }

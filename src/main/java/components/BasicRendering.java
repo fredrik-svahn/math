@@ -2,6 +2,7 @@ package components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +18,8 @@ public class BasicRendering
         public int x;
         public int y;
         public Image image;
+        public int originX;
+        public int originY;
 
         public RenderInformation(double angle,
                                  int x,
@@ -32,29 +35,11 @@ public class BasicRendering
     @Override
     void init() {
         frame = new JFrame();
-
-        frame.add(new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                g.clearRect(0, 0, frame.getWidth(), frame.getHeight());
-
-                images.forEach((name, image) -> {
-                    g.drawImage(image.image, image.x, image.y, null);
-                });
-
-                try {
-                    Thread.sleep(ms);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                repaint();
-            }
-        });
-
+        frame.add(new Window());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
         send(EventHandler::windowInit);
     }
 
@@ -87,5 +72,39 @@ public class BasicRendering
         RenderInformation renderInformation = images.get(name);
         renderInformation.x = x;
         renderInformation.y = y;
+    }
+
+    @Override
+    void imageOriginSet(String name,
+                        int x,
+                        int y) {
+        images.get(name).originX = x;
+        images.get(name).originY = y;
+    }
+
+    private class Window
+            extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            g.clearRect(0, 0, frame.getWidth(), frame.getHeight());
+
+            images.forEach((name, image) -> {
+                Graphics2D g2d = (Graphics2D) g;
+                AffineTransform transform = g2d.getTransform();
+                g2d.translate(image.x + image.originX, image.y + image.originY);
+                g2d.rotate(Math.toRadians(image.angle));
+                g2d.translate(-image.originX, -image.originY);
+                g.drawImage(image.image, 0, 0, null);
+                g2d.transform(transform);
+            });
+
+            try {
+                Thread.sleep(ms);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            repaint();
+        }
     }
 }
