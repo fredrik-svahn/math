@@ -175,6 +175,7 @@ public class Game {
      * @param entity
      */
     public static void update(Entity entity) {
+
         Movement.movement(entity);
         EnemyAI.enemyAI(entity);
         Expiration.expiry(entity);
