@@ -39,6 +39,7 @@ public class Game {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new UpdateWorld(), 0, ms);
+
     }
 
     private static void initScreen() {
