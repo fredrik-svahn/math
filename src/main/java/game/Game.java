@@ -50,74 +50,9 @@ public class Game {
         JPanel panel = new GameRendering(frame);
         frame.add(panel);
         frame.addKeyListener(new Keyboard());
-        frame.addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent mouseEvent) {
-
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent mouseEvent) {
-                mouseX = mouseEvent.getX();
-                mouseY = mouseEvent.getY();
-            }
-        });
-        frame.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                for (Entity entity : world) {
-                    entity.mouseClicked.accept(mouseEvent);
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-                for (Entity entity : world) {
-                    entity.mousePressed.accept(mouseEvent);
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
-                for (Entity entity : world) {
-                    entity.mouseReleased.accept(mouseEvent);
-                }
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-                for (Entity entity : world) {
-                    entity.mouseEntered.accept(mouseEvent);
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent mouseEvent) {
-                for (Entity entity : world) {
-                    entity.mouseExited.accept(mouseEvent);
-                }
-            }
-        });
-        frame.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent keyEvent) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent keyEvent) {
-                for (Entity entity : world) {
-                    entity.keyPressed.accept(keyEvent);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent keyEvent) {
-                for (Entity entity : world) {
-                    entity.keyPressed.accept(keyEvent);
-                }
-            }
-        });
+        frame.addMouseMotionListener(new MouseMotion());
+        frame.addMouseListener(new MouseClicks());
+        frame.addKeyListener(new Keyboard());
         frame.setVisible(true);
     }
 
@@ -183,5 +118,79 @@ public class Game {
         PlayerKeyboardMovement.playerKeyboardMovement(entity);
         TemporaryColor.tempColor(entity);
         MouseMoveDebug.mouseMoveDebug(entity);
+    }
+
+    private static class MouseMotion
+            implements MouseMotionListener {
+        @Override
+        public void mouseDragged(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent mouseEvent) {
+            mouseX = mouseEvent.getX();
+            mouseY = mouseEvent.getY();
+        }
+    }
+
+    private static class MouseClicks
+            implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent mouseEvent) {
+            for (Entity entity : world) {
+                entity.mouseClicked.accept(mouseEvent);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {
+            for (Entity entity : world) {
+                entity.mousePressed.accept(mouseEvent);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent mouseEvent) {
+            for (Entity entity : world) {
+                entity.mouseReleased.accept(mouseEvent);
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) {
+            for (Entity entity : world) {
+                entity.mouseEntered.accept(mouseEvent);
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) {
+            for (Entity entity : world) {
+                entity.mouseExited.accept(mouseEvent);
+            }
+        }
+    }
+
+    private static class Keyboard
+            implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent keyEvent) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent keyEvent) {
+            for (Entity entity : world) {
+                entity.keyPressed.accept(keyEvent);
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent keyEvent) {
+            for (Entity entity : world) {
+                entity.keyPressed.accept(keyEvent);
+            }
+        }
     }
 }

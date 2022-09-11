@@ -31,9 +31,6 @@ class GameRendering extends JPanel {
     }
 
     private void render(Graphics g, Entity entity) {
-        RenderFillRectangle.fillRectangleEntity(entity, g);
-        RenderDrawFacingAngle.drawFacingAngle(entity, g);
-        RenderDrawOutline.drawOutline(entity, g, Color.BLACK);
-        RenderFpsCounter.fpsCounterDraw(entity, g);
+
     }
 }
