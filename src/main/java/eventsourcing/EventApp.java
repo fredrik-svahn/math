@@ -1,13 +1,10 @@
 package eventsourcing;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class EventApp {
     private static EventLog eventLog = new EventLog();
-
-
 
     public static void main(String[] args) {
         String chars =  "ABCDEFGHIJKLMNOPQRSTUVXYZ";
@@ -21,7 +18,6 @@ public class EventApp {
 
             eventLog.emit(new UserCreated(userName.toString(), "fsv@kth.se"));
         }
-
 
         Set<String> takenUserNames = new HashSet<>();
 

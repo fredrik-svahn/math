@@ -1,7 +1,6 @@
-package function;
+package math.function;
 
-import math.function.Expression;
-import math.function.RealConstant;
+import java.util.stream.Stream;
 
 public class Sum
         extends Expression {
@@ -31,9 +30,26 @@ public class Sum
     }
 
     @Override
-    public void bind(String variableName,
+    public Expression bind(String variableName,
                      Expression value) {
-        a.bind(variableName, value);
-        b.bind(variableName, value);
+        return new Sum(
+                a.bind(variableName, value),
+                b.bind(variableName, value)
+        );
+    }
+
+    @Override
+    public Stream<Variable> variables() {
+        return Stream.concat(a.variables(), b.variables());
+    }
+
+    @Override
+    public Expression clone() {
+        return new Sum(a.clone(), b.clone());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%s + %s)", a.toString(), b.toString());
     }
 }

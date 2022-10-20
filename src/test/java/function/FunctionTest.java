@@ -1,60 +1,27 @@
 package function;
 
 import math.function.Expression;
-import math.function.RealConstant;
-import math.function.Variable;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.stream.Stream;
+
+import static org.junit.Assert.assertEquals;
 
 public class FunctionTest {
 
-    @Test
-    void name() {
-
+    @ParameterizedTest
+    @MethodSource("evaluationResults")
+    void expressionEquivalentAfterEvaluating(Expression expectedExpression, Expression secondExpression) {
+        assertEquals(expectedExpression, secondExpression);
     }
 
-    @Test
-    void testEvaluatingAConstantReturnsTheConstant() {
-        int someValue = 42;
-        RealConstant constant = new RealConstant(someValue);
-        Expression result = constant.evaluate();
-
-        assertTrue(result instanceof RealConstant);
-        assertEquals(someValue, ((RealConstant) result).value);
+    public Stream<Arguments> evaluationResults() {
+        return Stream.of(
+                Arguments.of()
+        );
     }
 
-    @Test
-    void testEvaluatingAVariableReturnsTheVariable() {
-        Expression variable = new Variable("x");
-        assertEquals(variable, variable.evaluate());
-    }
-
-    @Test
-    void testBindingAConstantValueToAVariableAndThenEvaluatingItReturnsTheBoundValue() {
-        Expression variable = new Variable("x");
-        double someValue = 123;
-        variable.bind("x", new RealConstant(someValue));
-        assertEquals(new RealConstant(someValue), variable.evaluate());
-    }
-
-    @Test
-    void testTwoVariablesWithTheSameNameAreTheSame() {
-        Expression x1 = new Variable("x");
-        Expression x2 = new Variable("x");
-
-        assertEquals(x1, x2);
-    }
-
-    @Test
-    void testBindingToAllVariablesInASumEvaluatesProperly() {
-        Variable x = new Variable("x");
-        Variable y = new Variable("y");
-        Expression sum = new Sum(x, y);
-        sum.bind("x", new RealConstant(123));
-        sum.bind("y", new RealConstant(456));
-
-        assertEquals(123+456, sum.asDouble());
-    }
 }
+

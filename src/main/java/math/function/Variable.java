@@ -1,10 +1,10 @@
 package math.function;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class Variable extends Expression {
     private String name;
-    private Expression value;
 
     public Variable(String name) {
         this.name = name;
@@ -12,18 +12,34 @@ public class Variable extends Expression {
 
     @Override
     public Expression evaluate() {
-        if(value == null) return this;
-
-        return value.evaluate();
+        return this;
     }
 
     @Override
-    public void bind(String variableName,
-                     Expression value) {
-        if(variableName.equals(name)) {
-            this.value = value;
+    public Expression bind(String variableName, Expression value) {
+        if (variableName.equals(name)) {
+            return value.clone();
+        }
+        else {
+            return new Variable(name);
         }
     }
+
+    @Override
+    public Stream<Variable> variables() {
+        return Stream.of(this);
+    }
+
+    @Override
+    public Expression clone() {
+        return new Variable(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
 
     @Override
     public boolean equals(Object object) {
@@ -35,6 +51,8 @@ public class Variable extends Expression {
 
         return Objects.equals(name, variable.name);
     }
+
+
 
     @Override
     public int hashCode() {

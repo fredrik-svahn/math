@@ -3,6 +3,7 @@ package math.function;
 
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class RealConstant extends Expression {
     public double value;
@@ -17,11 +18,24 @@ public class RealConstant extends Expression {
     }
 
     @Override
-    public void bind(String variableName,
-                     Expression value) {
-        /**
-         * Binding to a constant does nothing
-         */
+    public Expression bind(String variableName, Expression value) {
+        return new RealConstant(this.value);
+    }
+
+
+    @Override
+    public Stream<Variable> variables() {
+        return Stream.of();
+    }
+
+    @Override
+    public Expression clone() {
+        return new RealConstant(value);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%f", value);
     }
 
     @Override

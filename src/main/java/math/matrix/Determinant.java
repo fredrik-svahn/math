@@ -3,7 +3,7 @@ package math.matrix;
 import math.exception.DeterminantOfEmptyMatrix;
 import math.exception.NonSquareDeterminant;
 
-class Determinant {
+public class Determinant {
     private final Matrix matrixElements;
 
     public Determinant(Matrix matrixElements) {this.matrixElements = matrixElements;}

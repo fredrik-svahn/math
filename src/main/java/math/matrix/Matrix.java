@@ -31,10 +31,8 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
     }
 
     public void set(int x, int y, Double value) {
-        if (x >= dimension.width)
-            dimension.width = x + 1;
-        if (y >= dimension.height)
-            dimension.height = y + 1;
+        if (x >= dimension.width) dimension.width = x + 1;
+        if (y >= dimension.height) dimension.height = y + 1;
         setValue(x, y, value);
     }
 
@@ -61,8 +59,8 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
         return new Transpose(this).invoke();
     }
 
-    public Matrix subMatrix(Point start, Point end) {
-        return filter(((point, aDouble) -> point.x <= end.x && point.x >= start.x && point.y >= start.y && point.y <= end.y));
+    public Matrix subMatrix(Point topLeft, Point bottomRight) {
+        return filter(((point, aDouble) -> point.x <= bottomRight.x && point.x >= topLeft.x && point.y >= topLeft.y && point.y <= bottomRight.y));
     }
 
     public Matrix filter(BiFunction<Point, Double, Boolean> filter) {
@@ -130,10 +128,8 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
     }
 
     public double dotProduct(Matrix m) {
-        if (dimension().width != 1)
-            throw new IllegalArgumentException();
-        if (m.dimension().width != 1)
-            throw new IllegalArgumentException();
+        if (dimension().width != 1) throw new IllegalArgumentException();
+        if (m.dimension().width != 1) throw new IllegalArgumentException();
 
         double sum = 0;
         for (MatrixElement matrixElement : this) {
@@ -234,7 +230,6 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
 
         Matrix copy = copy();
 
-
         int swaps = 0;
         // Swap to create nonzero diagonal
         for (int i = 0; i < copy.dimension().height; i++) {
@@ -288,8 +283,7 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
             for (int j = i + 1; j < dimension().height; j++) {
                 double b = get(pivot(i), j);
 
-                if (a == 0)
-                    return;
+                if (a == 0) return;
 
                 addRowMultiple(i, j, -b / a);
                 augment.addRowMultiple(i, j, -b / a);
@@ -305,8 +299,7 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
                 double b = get(rPivot(i), j);
 
 
-                if (a == 0)
-                    return;
+                if (a == 0) return;
 
                 addRowMultiple(i, j, -b / a);
                 augment.addRowMultiple(i, j, -b / a);
@@ -465,8 +458,7 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
 
     public boolean contains(Double value) {
         for (MatrixElement matrixElement : this) {
-            if (matrixElement.value.equals(value))
-                return true;
+            if (matrixElement.value.equals(value)) return true;
         }
 
         return false;
@@ -535,10 +527,8 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
 
     public Matrix cross(Matrix m, double chance) {
         return map((p, v) -> {
-            if (Math.random() <= chance)
-                return m.get(p);
-            else
-                return v;
+            if (Math.random() <= chance) return m.get(p);
+            else return v;
         });
     }
 
@@ -567,8 +557,7 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
 
     public int pivot(int row) {
         for (int i = 0; i < dimension().width; i++) {
-            if (get(i, row) != 0)
-                return i;
+            if (get(i, row) != 0) return i;
         }
 
         return getRow(row).size() - 1;
@@ -577,8 +566,7 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
     public int rPivot(int row) {
 
         for (int i = dimension().width - 1; i >= 0; i--) {
-            if (get(i, row) != 0)
-                return i;
+            if (get(i, row) != 0) return i;
         }
 
         return 0;
