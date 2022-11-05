@@ -1,0 +1,10 @@
+expression = identifier
+                | decimal number
+                | operation
+                | lparen, expression, rparen
+operator = plus
+                | minus
+                | times
+                | division
+                | exponent
+operation = expression, operator, {expression, operator}, expression

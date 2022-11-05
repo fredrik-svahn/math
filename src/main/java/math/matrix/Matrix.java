@@ -361,7 +361,6 @@ public abstract class Matrix implements Set<Double>, Iterable<MatrixElement> {
         Matrix id = matrix.identity();
         matrix.reduce(id);
 
-
         return id;
     }
 
